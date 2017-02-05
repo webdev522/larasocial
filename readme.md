@@ -1,3 +1,89 @@
+# Reference URL
+
+https://scotch.io/tutorials/laravel-social-authentication-with-socialite
+
+# Requirements
+
+##laravel5.2
+##socialite
+
+# Step
+## Create developer account for test app
+## composer create-project laravel/laravel projectname "5.2.*"
+## db config
+## user migration update & migrate
+[...]
+public function up()
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('email')->nullable();
+            $table->string('password', 60)->nullable();
+            $table->string('provider');
+            $table->string('provider_id')->unique();
+            $table->rememberToken();
+            $table->timestamps();
+        });
+    }
+[...]
+php artisan migrate
+
+## update user model
+[...]
+protected $fillable = [
+        'name', 'email', 'password', 'provider', 'provider_id'
+    ];
+[...]
+
+## make auth
+php artisan make:auth
+
+## add socialite
+composer require laravel/socialite "2.*"
+
+## update config/app.php
+'providers' => [
+    // Other service providers...
+
+    Laravel\Socialite\SocialiteServiceProvider::class,
+],
+'aliases' => [
+    // Other aliases...
+
+    'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+],
+
+## update config/services.php
+Set the callback URL to http://localhost:8000/auth/twitter/callback
+[...]
+'twitter' => [
+        'client_id'     => env('TWITTER_ID'),
+        'client_secret' => env('TWITTER_SECRET'),
+        'redirect'      => env('TWITTER_URL'),
+    ],
+[...]
+
+.env
+TWITTER_ID={{API Key}}
+TWITTER_SECRET={{API secret}}
+TWITTER_URL={{callbackurl}}
+
+The FACEBOOK_URL in this case will be http://localhost:8000/auth/facebook/callback
+[...]
+'facebook' => [
+        'client_id'     => env('FACEBOOK_ID'),
+        'client_secret' => env('FACEBOOK_SECRET'),
+        'redirect'      => env('FACEBOOK_URL'),
+    ],
+[...]
+
+## update routes.php
+Route::get('auth/{provider}', 'Auth\AuthController@redirectToProvider');
+Route::get('auth/{provider}/callback', 'Auth\AuthController@handleProviderCallback');
+
+## update AuthController.php & register & login blade
+
 # Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
