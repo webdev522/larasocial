@@ -3,6 +3,7 @@
 https://scotch.io/tutorials/laravel-social-authentication-with-socialite
 
 # Requirements
+
 laravel5.2.*
 
 socialite2.*
@@ -19,17 +20,29 @@ socialite2.*
 [...]
 
 public function up()
+
     {
+    
         Schema::create('users', function (Blueprint $table) {
+        
             $table->increments('id');
+            
             $table->string('name');
+            
             $table->string('email')->nullable();
+            
             $table->string('password', 60)->nullable();
+            
             $table->string('provider');
+            
             $table->string('provider_id')->unique();
+            
             $table->rememberToken();
+            
             $table->timestamps();
+            
         });
+        
     }
     
 [...]
@@ -41,7 +54,9 @@ php artisan migrate
 [...]
 
 protected $fillable = [
+
         'name', 'email', 'password', 'provider', 'provider_id'
+        
     ];
     
 [...]
@@ -57,15 +72,19 @@ composer require laravel/socialite "2.*"
 ## update config/app.php
 
 'providers' => [
+
     // Other service providers...
 
     Laravel\Socialite\SocialiteServiceProvider::class,
+    
 ],
 
 'aliases' => [
+
     // Other aliases...
 
     'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+    
 ],
 
 ## update config/services.php
@@ -75,9 +94,13 @@ Set the callback URL to http://localhost:8000/auth/twitter/callback
 [...]
 
 'twitter' => [
+
         'client_id'     => env('TWITTER_ID'),
+        
         'client_secret' => env('TWITTER_SECRET'),
+        
         'redirect'      => env('TWITTER_URL'),
+        
     ],
     
 [...]
@@ -96,9 +119,13 @@ The FACEBOOK_URL in this case will be http://localhost:8000/auth/facebook/callba
 [...]
 
 'facebook' => [
+
         'client_id'     => env('FACEBOOK_ID'),
+        
         'client_secret' => env('FACEBOOK_SECRET'),
+        
         'redirect'      => env('FACEBOOK_URL'),
+        
     ],
     
 [...]
