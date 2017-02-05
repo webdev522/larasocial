@@ -3,9 +3,8 @@
 https://scotch.io/tutorials/laravel-social-authentication-with-socialite
 
 # Requirements
-
-##laravel5.2
-##socialite
+laravel5.2
+socialite
 
 # Step
 ## Create developer account for test app
